@@ -6,6 +6,22 @@ function App() {
   const [amount, setAmount] = useState("");
   const [transactions, setTransactions] = useState([]);
 
+
+  function addTransaction() {
+    if (!text || !amount) return;
+
+    const newTransaction = {
+      id: Date.now(),
+      text,
+      amount: Number(amount),
+    };
+
+    setTransactions([...transactions, newTransaction]);
+
+    setText("");
+    setAmount("");
+  }
+
   return (
     <div>
       <h1>Expense Tracker</h1>
