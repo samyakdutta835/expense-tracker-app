@@ -1,0 +1,32 @@
+.empty-state {
+  background: #1e293b;
+  border-radius: 20px;
+  padding: 60px 30px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .25);
+}
+
+.empty-icon {
+  width: 90px;
+  height: 90px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
+  background: rgba(59, 130, 246, .12);
+  color: #3b82f6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+}
+
+.empty-state h3 {
+  font-size: 1.6rem;
+  margin-bottom: 12px;
+}
+
+.empty-state p {
+  max-width: 420px;
+  margin: auto;
+  color: #94a3b8;
+  line-height: 1.6;
+}
