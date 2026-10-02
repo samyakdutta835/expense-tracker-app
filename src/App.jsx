@@ -6,6 +6,9 @@ import TransactionForm from "./components/TransactionForm";
 import SearchBar from "./components/SearchBar";
 import TransactionList from "./components/TransactionList";
 import Statistics from "./components/Statistics";
+import MonthlyAnalytics from "./components/MonthlyAnalytics";
+import DataManager from "./components/DataManager";
+import ConfirmationModal from "./components/ConfirmationModal";
 
 import "./styles/App.css";
 
@@ -29,15 +32,45 @@ function App() {
     }
   });
 
-  const [editingTransaction, setEditingTransaction] = useState(null);
+  const [editingTransaction, setEditingTransaction] =
+    useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [typeFilter, setTypeFilter] = useState("all");
+  const [typeFilter, setTypeFilter] =
+    useState("all");
 
-  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] =
+    useState("all");
 
-  const [sortOrder, setSortOrder] = useState("newest");
+  const [sortOrder, setSortOrder] =
+    useState("newest");
+
+  const [showClearModal, setShowClearModal] =
+    useState(false);
+
+
+  const importTransactions = (
+    importedTransactions
+  ) => {
+    setTransactions(importedTransactions);
+  };
+
+  const clearAllTransactions = () => {
+    setTransactions([]);
+
+    setEditingTransaction(null);
+
+    setSearchTerm("");
+
+    setTypeFilter("all");
+
+    setCategoryFilter("all");
+
+    setSortOrder("newest");
+
+    setShowClearModal(false);
+  };
 
   /*
    * Save transactions whenever they change.
@@ -77,13 +110,13 @@ function App() {
       previousTransactions.map((transaction) =>
         transaction.id === updatedData.id
           ? {
-              ...transaction,
-              description: updatedData.description.trim(),
-              amount: Number(updatedData.amount),
-              type: updatedData.type,
-              category: updatedData.category,
-              date: updatedData.date,
-            }
+            ...transaction,
+            description: updatedData.description.trim(),
+            amount: Number(updatedData.amount),
+            type: updatedData.type,
+            category: updatedData.category,
+            date: updatedData.date,
+          }
           : transaction
       )
     );
@@ -252,6 +285,17 @@ function App() {
 
         <SummaryCards summary={summary} />
 
+        <MonthlyAnalytics
+          transactions={transactions}
+        />
+
+        <DataManager
+          transactions={transactions}
+          onImport={importTransactions}
+        />
+
+
+
         <div className="main-grid">
           <section className="left-column">
             <TransactionForm
@@ -277,12 +321,26 @@ function App() {
                   <h2>Recent Transactions</h2>
                 </div>
 
-                <span className="transaction-count">
-                  {transactions.length}{" "}
-                  {transactions.length === 1
-                    ? "transaction"
-                    : "transactions"}
-                </span>
+                <div className="transaction-heading-actions">
+                  <span className="transaction-count">
+                    {transactions.length}{" "}
+                    {transactions.length === 1
+                      ? "transaction"
+                      : "transactions"}
+                  </span>
+
+                  {transactions.length > 0 && (
+                    <button
+                      type="button"
+                      className="clear-all-button"
+                      onClick={() =>
+                        setShowClearModal(true)
+                      }
+                    >
+                      Clear All
+                    </button>
+                  )}
+                </div>
               </div>
 
               <SearchBar
@@ -311,6 +369,20 @@ function App() {
           Expense Tracker • Built with React
         </p>
       </footer>
+
+      <ConfirmationModal
+        isOpen={showClearModal}
+        title="Clear all transactions?"
+        message="This will permanently remove every transaction stored in this browser. This action cannot be undone."
+        confirmText="Clear Everything"
+        cancelText="Keep Transactions"
+        danger={true}
+        onConfirm={clearAllTransactions}
+        onCancel={() =>
+          setShowClearModal(false)
+        }
+      />
+
     </div>
   );
 }
