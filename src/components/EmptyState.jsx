@@ -1,18 +1,15 @@
-import { FiInbox } from "react-icons/fi";
-import "../styles/EmptyState.css";
-
-function EmptyState({ message }) {
+function EmptyState() {
   return (
     <div className="empty-state">
       <div className="empty-icon">
-        <FiInbox />
+        ₹
       </div>
 
-      <h3>Nothing Here</h3>
+      <h3>No transactions found</h3>
 
       <p>
-        {message ||
-          "Start by adding your first income or expense to keep track of your finances."}
+        Start adding your income and expenses to see
+        them here.
       </p>
     </div>
   );

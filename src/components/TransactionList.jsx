@@ -1,30 +1,26 @@
-import TransactionItem from "./TransactionItem";
 import EmptyState from "./EmptyState";
-import "../styles/TransactionList.css";
+import TransactionItem from "./TransactionItem";
 
 function TransactionList({
   transactions,
-  deleteTransaction,
+  onDelete,
+  onEdit,
 }) {
-  return (
-    <section className="list-card">
-      <h2>Recent Transactions</h2>
+  if (transactions.length === 0) {
+    return <EmptyState />;
+  }
 
-      {transactions.length === 0 ? (
-        <EmptyState message="No matching transactions found. Start by adding a new one!" />
-      ) : (
-        transactions
-          .slice()
-          .reverse()
-          .map((transaction) => (
-            <TransactionItem
-              key={transaction.id}
-              transaction={transaction}
-              deleteTransaction={deleteTransaction}
-            />
-          ))
-      )}
-    </section>
+  return (
+    <div className="transaction-list">
+      {transactions.map((transaction) => (
+        <TransactionItem
+          key={transaction.id}
+          transaction={transaction}
+          onDelete={onDelete}
+          onEdit={onEdit}
+        />
+      ))}
+    </div>
   );
 }
 

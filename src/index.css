@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 * {
   margin: 0;
@@ -6,26 +6,49 @@
   box-sizing: border-box;
 }
 
-:root {
-  --bg: #0f172a;
-  --card: #1e293b;
-  --card-light: #334155;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --income: #22c55e;
-  --expense: #ef4444;
-  --text: #f8fafc;
-  --secondary: #94a3b8;
-  --border: #334155;
+html {
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: "Inter", sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  background: #f5f7fb;
+  color: #172033;
+  min-width: 320px;
 }
 
 button,
-input {
-  font-family: inherit;
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eef1f6;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c5ccd8;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #9da7b8;
 }

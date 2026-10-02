@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import Header from "./components/Header";
 import SummaryCards from "./components/SummaryCards";
@@ -7,82 +7,310 @@ import SearchBar from "./components/SearchBar";
 import TransactionList from "./components/TransactionList";
 import Statistics from "./components/Statistics";
 
+import "./styles/App.css";
+
+const STORAGE_KEY = "expense_tracker_transactions";
+
+const defaultTransactions = [];
+
 function App() {
-  const [text, setText] = useState("");
-  const [amount, setAmount] = useState("");
-  const [search, setSearch] = useState("");
+  const [transactions, setTransactions] = useState(() => {
+    try {
+      const savedTransactions = localStorage.getItem(STORAGE_KEY);
 
-  const [transactions, setTransactions] = useState([]);
+      if (savedTransactions) {
+        return JSON.parse(savedTransactions);
+      }
 
-  // Add Transaction
-  function addTransaction() {
-    if (!text.trim() || amount.trim() === "") {
-      alert("Please enter both description and amount.");
-      return;
+      return defaultTransactions;
+    } catch (error) {
+      console.error("Failed to load transactions:", error);
+      return [];
     }
+  });
 
+  const [editingTransaction, setEditingTransaction] = useState(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [typeFilter, setTypeFilter] = useState("all");
+
+  const [categoryFilter, setCategoryFilter] = useState("all");
+
+  const [sortOrder, setSortOrder] = useState("newest");
+
+  /*
+   * Save transactions whenever they change.
+   */
+  useEffect(() => {
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(transactions)
+    );
+  }, [transactions]);
+
+  /*
+   * Add transaction
+   */
+  const addTransaction = (transactionData) => {
     const newTransaction = {
       id: Date.now(),
-      text: text.trim(),
-      amount: Number(amount),
+      description: transactionData.description.trim(),
+      amount: Number(transactionData.amount),
+      type: transactionData.type,
+      category: transactionData.category,
+      date: transactionData.date,
+      createdAt: new Date().toISOString(),
     };
 
-    setTransactions((prevTransactions) => [
-      ...prevTransactions,
+    setTransactions((previousTransactions) => [
       newTransaction,
+      ...previousTransactions,
     ]);
+  };
 
-    setText("");
-    setAmount("");
-  }
+  /*
+   * Update transaction
+   */
+  const updateTransaction = (updatedData) => {
+    setTransactions((previousTransactions) =>
+      previousTransactions.map((transaction) =>
+        transaction.id === updatedData.id
+          ? {
+              ...transaction,
+              description: updatedData.description.trim(),
+              amount: Number(updatedData.amount),
+              type: updatedData.type,
+              category: updatedData.category,
+              date: updatedData.date,
+            }
+          : transaction
+      )
+    );
 
-  // Delete Transaction
-  function deleteTransaction(id) {
-    setTransactions((prevTransactions) =>
-      prevTransactions.filter(
+    setEditingTransaction(null);
+  };
+
+  /*
+   * Delete transaction
+   */
+  const deleteTransaction = (id) => {
+    const transaction = transactions.find(
+      (item) => item.id === id
+    );
+
+    if (!transaction) return;
+
+    const confirmed = window.confirm(
+      `Delete "${transaction.description}"?`
+    );
+
+    if (!confirmed) return;
+
+    setTransactions((previousTransactions) =>
+      previousTransactions.filter(
         (transaction) => transaction.id !== id
       )
     );
-  }
 
-  // Search Transactions
-  const filteredTransactions = transactions.filter((transaction) =>
-    transaction.text
-      .toLowerCase()
-      .includes(search.toLowerCase())
-  );
+    if (editingTransaction?.id === id) {
+      setEditingTransaction(null);
+    }
+  };
+
+  /*
+   * Edit transaction
+   */
+  const startEditing = (transaction) => {
+    setEditingTransaction(transaction);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  /*
+   * Cancel editing
+   */
+  const cancelEditing = () => {
+    setEditingTransaction(null);
+  };
+
+  /*
+   * Calculate financial summary
+   */
+  const summary = useMemo(() => {
+    const income = transactions
+      .filter((transaction) => transaction.type === "income")
+      .reduce(
+        (total, transaction) =>
+          total + Number(transaction.amount),
+        0
+      );
+
+    const expenses = transactions
+      .filter((transaction) => transaction.type === "expense")
+      .reduce(
+        (total, transaction) =>
+          total + Number(transaction.amount),
+        0
+      );
+
+    const balance = income - expenses;
+
+    return {
+      income,
+      expenses,
+      balance,
+      savings: balance,
+    };
+  }, [transactions]);
+
+  /*
+   * Filter and sort transactions
+   */
+  const filteredTransactions = useMemo(() => {
+    let result = [...transactions];
+
+    // Search
+    if (searchTerm.trim()) {
+      const search = searchTerm.toLowerCase();
+
+      result = result.filter((transaction) =>
+        transaction.description
+          .toLowerCase()
+          .includes(search)
+      );
+    }
+
+    // Type filter
+    if (typeFilter !== "all") {
+      result = result.filter(
+        (transaction) => transaction.type === typeFilter
+      );
+    }
+
+    // Category filter
+    if (categoryFilter !== "all") {
+      result = result.filter(
+        (transaction) =>
+          transaction.category === categoryFilter
+      );
+    }
+
+    // Sorting
+    result.sort((a, b) => {
+      if (sortOrder === "newest") {
+        return new Date(b.date) - new Date(a.date);
+      }
+
+      if (sortOrder === "oldest") {
+        return new Date(a.date) - new Date(b.date);
+      }
+
+      if (sortOrder === "highest") {
+        return b.amount - a.amount;
+      }
+
+      if (sortOrder === "lowest") {
+        return a.amount - b.amount;
+      }
+
+      return 0;
+    });
+
+    return result;
+  }, [
+    transactions,
+    searchTerm,
+    typeFilter,
+    categoryFilter,
+    sortOrder,
+  ]);
 
   return (
     <div className="app">
-      {/* Header */}
       <Header />
 
-      {/* Summary Cards */}
-      <SummaryCards transactions={transactions} />
+      <main className="container">
+        <section className="hero-section">
+          <div>
+            <p className="hero-label">PERSONAL FINANCE</p>
 
-      {/* Transaction Form */}
-      <TransactionForm
-        text={text}
-        setText={setText}
-        amount={amount}
-        setAmount={setAmount}
-        addTransaction={addTransaction}
-      />
+            <h1>
+              Take control of your
+              <span> money.</span>
+            </h1>
 
-      {/* Search */}
-      <SearchBar
-        search={search}
-        setSearch={setSearch}
-      />
+            <p className="hero-description">
+              Track your income and expenses, understand your
+              spending habits, and manage your money smarter.
+            </p>
+          </div>
+        </section>
 
-      {/* Transaction List */}
-      <TransactionList
-        transactions={filteredTransactions}
-        deleteTransaction={deleteTransaction}
-      />
+        <SummaryCards summary={summary} />
 
-      {/* Statistics */}
-      <Statistics transactions={transactions} />
+        <div className="main-grid">
+          <section className="left-column">
+            <TransactionForm
+              onAddTransaction={addTransaction}
+              onUpdateTransaction={updateTransaction}
+              editingTransaction={editingTransaction}
+              onCancelEdit={cancelEditing}
+            />
+
+            <Statistics
+              transactions={transactions}
+            />
+          </section>
+
+          <section className="right-column">
+            <div className="transactions-section">
+              <div className="section-heading">
+                <div>
+                  <p className="section-label">
+                    TRANSACTION HISTORY
+                  </p>
+
+                  <h2>Recent Transactions</h2>
+                </div>
+
+                <span className="transaction-count">
+                  {transactions.length}{" "}
+                  {transactions.length === 1
+                    ? "transaction"
+                    : "transactions"}
+                </span>
+              </div>
+
+              <SearchBar
+                searchTerm={searchTerm}
+                setSearchTerm={setSearchTerm}
+                typeFilter={typeFilter}
+                setTypeFilter={setTypeFilter}
+                categoryFilter={categoryFilter}
+                setCategoryFilter={setCategoryFilter}
+                sortOrder={sortOrder}
+                setSortOrder={setSortOrder}
+              />
+
+              <TransactionList
+                transactions={filteredTransactions}
+                onDelete={deleteTransaction}
+                onEdit={startEditing}
+              />
+            </div>
+          </section>
+        </div>
+      </main>
+
+      <footer className="footer">
+        <p>
+          Expense Tracker • Built with React
+        </p>
+      </footer>
     </div>
   );
 }

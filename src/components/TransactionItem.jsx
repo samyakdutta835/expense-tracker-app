@@ -1,36 +1,93 @@
-import { FiTrash2, FiTrendingDown, FiTrendingUp } from "react-icons/fi";
-import "../styles/TransactionItem.css";
+const categoryIcons = {
+  Food: "🍔",
+  Transport: "🚗",
+  Shopping: "🛍",
+  Bills: "💡",
+  Rent: "🏠",
+  Entertainment: "🎮",
+  Salary: "💰",
+  Education: "📚",
+  Health: "❤️",
+  Other: "📦",
+};
 
-function TransactionItem({ transaction, deleteTransaction }) {
-  const isIncome = transaction.amount > 0;
+function formatCurrency(amount) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(amount);
+}
+
+function formatDate(date) {
+  if (!date) return "";
+
+  return new Date(`${date}T00:00:00`).toLocaleDateString(
+    "en-IN",
+    {
+      day: "numeric",
+      month: "short",
+      year: "numeric",
+    }
+  );
+}
+
+function TransactionItem({
+  transaction,
+  onDelete,
+  onEdit,
+}) {
+  const isIncome = transaction.type === "income";
 
   return (
-    <div className={`transaction-card ${isIncome ? "income-card" : "expense-card"}`}>
-      <div className="transaction-left">
-        <div className={`transaction-icon ${isIncome ? "income-icon" : "expense-icon"}`}>
-          {isIncome ? <FiTrendingUp /> : <FiTrendingDown />}
-        </div>
+    <article className="transaction-item">
+      <div
+        className={`transaction-icon ${
+          isIncome ? "income-icon" : "expense-icon"
+        }`}
+      >
+        {categoryIcons[transaction.category] || "📦"}
+      </div>
 
-        <div>
-          <h3>{transaction.text}</h3>
+      <div className="transaction-info">
+        <h3>{transaction.description}</h3>
 
-          <p>{isIncome ? "Income" : "Expense"}</p>
+        <div className="transaction-meta">
+          <span>{transaction.category}</span>
+          <span>•</span>
+          <span>{formatDate(transaction.date)}</span>
         </div>
       </div>
 
-      <div className="transaction-right">
-        <h3 className={isIncome ? "income-text" : "expense-text"}>
-          {isIncome ? "+" : "-"}₹{Math.abs(transaction.amount).toFixed(2)}
-        </h3>
+      <div
+        className={`transaction-amount ${
+          isIncome ? "income-amount" : "expense-amount"
+        }`}
+      >
+        {isIncome ? "+" : "-"}
+        {formatCurrency(transaction.amount)}
+      </div>
+
+      <div className="transaction-actions">
+        <button
+          type="button"
+          className="edit-button"
+          onClick={() => onEdit(transaction)}
+          title="Edit transaction"
+        >
+          ✎
+        </button>
 
         <button
-          className="delete-btn"
-          onClick={() => deleteTransaction(transaction.id)}
+          type="button"
+          className="delete-button"
+          onClick={() => onDelete(transaction.id)}
+          title="Delete transaction"
         >
-          <FiTrash2 />
+          🗑
         </button>
       </div>
-    </div>
+    </article>
   );
 }
 
