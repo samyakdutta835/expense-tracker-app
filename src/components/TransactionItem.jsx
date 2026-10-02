@@ -1,7 +1,7 @@
 const categoryIcons = {
   Food: "🍔",
   Transport: "🚗",
-  Shopping: "🛍",
+  Shopping: "🛍️",
   Bills: "💡",
   Rent: "🏠",
   Entertainment: "🎮",
@@ -22,14 +22,17 @@ function formatCurrency(amount) {
 function formatDate(date) {
   if (!date) return "";
 
-  return new Date(`${date}T00:00:00`).toLocaleDateString(
-    "en-IN",
-    {
-      day: "numeric",
-      month: "short",
-      year: "numeric",
-    }
-  );
+  const parsedDate = new Date(`${date}T00:00:00`);
+
+  if (Number.isNaN(parsedDate.getTime())) {
+    return "Invalid date";
+  }
+
+  return parsedDate.toLocaleDateString("en-IN", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 }
 
 function TransactionItem({
@@ -43,28 +46,39 @@ function TransactionItem({
     <article className="transaction-item">
       <div
         className={`transaction-icon ${
-          isIncome ? "income-icon" : "expense-icon"
+          isIncome
+            ? "income-icon"
+            : "expense-icon"
         }`}
       >
         {categoryIcons[transaction.category] || "📦"}
       </div>
 
       <div className="transaction-info">
-        <h3>{transaction.description}</h3>
+        <h3 title={transaction.description}>
+          {transaction.description}
+        </h3>
 
         <div className="transaction-meta">
           <span>{transaction.category}</span>
+
           <span>•</span>
-          <span>{formatDate(transaction.date)}</span>
+
+          <span>
+            {formatDate(transaction.date)}
+          </span>
         </div>
       </div>
 
       <div
         className={`transaction-amount ${
-          isIncome ? "income-amount" : "expense-amount"
+          isIncome
+            ? "income-amount"
+            : "expense-amount"
         }`}
       >
         {isIncome ? "+" : "-"}
+
         {formatCurrency(transaction.amount)}
       </div>
 
@@ -74,6 +88,7 @@ function TransactionItem({
           className="edit-button"
           onClick={() => onEdit(transaction)}
           title="Edit transaction"
+          aria-label={`Edit ${transaction.description}`}
         >
           ✎
         </button>
@@ -83,6 +98,7 @@ function TransactionItem({
           className="delete-button"
           onClick={() => onDelete(transaction.id)}
           title="Delete transaction"
+          aria-label={`Delete ${transaction.description}`}
         >
           🗑
         </button>

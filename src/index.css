@@ -1,5 +1,49 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
+:root {
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface-secondary: #f8fafc;
+  --border: #e8ebf0;
+
+  --text-primary: #111827;
+  --text-secondary: #475569;
+  --text-muted: #8992a3;
+
+  --accent: #111827;
+  --accent-hover: #273244;
+
+  --income: #16a34a;
+  --income-bg: #ecfdf5;
+
+  --expense: #dc2626;
+  --expense-bg: #fef2f2;
+
+  --shadow: 0 5px 25px rgba(15, 23, 42, 0.04);
+}
+
+body.dark-mode {
+  --bg: #0b1120;
+  --surface: #111827;
+  --surface-secondary: #182235;
+  --border: #263247;
+
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+
+  --accent: #f8fafc;
+  --accent-hover: #e2e8f0;
+
+  --income: #4ade80;
+  --income-bg: rgba(22, 163, 74, 0.12);
+
+  --expense: #f87171;
+  --expense-bg: rgba(220, 38, 38, 0.12);
+
+  --shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -11,10 +55,19 @@ html {
 }
 
 body {
+  width: 100%;
+  min-width: 0;
+
   font-family: "Inter", sans-serif;
-  background: #f5f7fb;
-  color: #172033;
-  min-width: 320px;
+
+  background: var(--bg);
+  color: var(--text-primary);
+
+  overflow-x: hidden;
+
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease;
 }
 
 button,
@@ -41,14 +94,10 @@ select {
 }
 
 ::-webkit-scrollbar-track {
-  background: #eef1f6;
+  background: var(--surface-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c5ccd8;
+  background: #64748b;
   border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #9da7b8;
 }
