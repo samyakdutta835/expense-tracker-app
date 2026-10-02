@@ -9,6 +9,7 @@ import Statistics from "./components/Statistics";
 import MonthlyAnalytics from "./components/MonthlyAnalytics";
 import DataManager from "./components/DataManager";
 import ConfirmationModal from "./components/ConfirmationModal";
+import AdvancedAnalytics from "./components/AdvancedAnalytics";
 
 import "./styles/App.css";
 
@@ -288,6 +289,10 @@ function App() {
         <MonthlyAnalytics
           transactions={transactions}
         />
+
+        <AdvancedAnalytics
+  transactions={transactions}
+/>
 
         <DataManager
           transactions={transactions}

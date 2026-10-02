@@ -2931,3 +2931,775 @@ body.dark-mode .expense-icon {
     font-size: 8px;
   }
 }
+
+
+/* =========================================================
+   PHASE 4B
+   ADVANCED INTERACTIVE ANALYTICS
+========================================================= */
+
+.advanced-analytics {
+  width: 100%;
+
+  margin-bottom: 25px;
+
+  padding: 25px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 18px;
+
+  background: var(--surface);
+
+  box-shadow: var(--shadow);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.advanced-analytics-header {
+  margin-bottom: 20px;
+}
+
+.advanced-analytics-header h2 {
+  color: var(--text-primary);
+
+  font-size: 22px;
+
+  letter-spacing: -0.5px;
+}
+
+.advanced-analytics-header p:last-child {
+  margin-top: 6px;
+
+  color: var(--text-muted);
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   DATE FILTER
+========================================================= */
+
+.analytics-filter-card {
+  margin-bottom: 20px;
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 13px;
+
+  background: var(--surface-secondary);
+}
+
+.analytics-filter-form {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr)
+    auto
+    auto;
+
+  gap: 10px;
+
+  align-items: end;
+}
+
+.analytics-date-field {
+  min-width: 0;
+}
+
+.analytics-date-field label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+.analytics-date-field input {
+  width: 100%;
+
+  height: 40px;
+
+  padding: 0 10px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 8px;
+
+  background: var(--surface);
+
+  color: var(--text-primary);
+
+  font-size: 11px;
+}
+
+.analytics-filter-form button {
+  height: 40px;
+
+  padding: 0 14px;
+
+  border: none;
+
+  border-radius: 8px;
+
+  background: var(--text-primary);
+
+  color: var(--bg);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  transition: 0.2s;
+}
+
+.analytics-filter-form button:hover {
+  opacity: 0.85;
+}
+
+.analytics-filter-form
+  .analytics-reset {
+  border: 1px solid var(--border);
+
+  background: var(--surface);
+
+  color: var(--text-secondary);
+}
+
+.analytics-range-label {
+  margin-top: 10px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.analytics-range-label strong {
+  color: var(--text-secondary);
+}
+
+.analytics-range-error {
+  margin-top: 10px;
+
+  padding: 9px 11px;
+
+  border: 1px solid #fecaca;
+
+  border-radius: 8px;
+
+  background: var(--expense-bg);
+
+  color: var(--expense);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   SUMMARY
+========================================================= */
+
+.advanced-summary-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 12px;
+
+  margin-bottom: 20px;
+}
+
+.advanced-summary-card {
+  min-width: 0;
+
+  padding: 16px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  background: var(--surface);
+}
+
+.advanced-summary-card span {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+
+  font-weight: 700;
+}
+
+.advanced-summary-card strong {
+  display: block;
+
+  color: var(--text-primary);
+
+  font-size: 18px;
+
+  overflow-wrap: anywhere;
+}
+
+.advanced-summary-card small {
+  display: block;
+
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 8px;
+}
+
+.income-text {
+  color: var(--income) !important;
+}
+
+.expense-text {
+  color: var(--expense) !important;
+}
+
+.savings-text {
+  color: #6366f1 !important;
+}
+
+/* =========================================================
+   CHART CARDS
+========================================================= */
+
+.analytics-chart-card {
+  min-width: 0;
+
+  margin-bottom: 20px;
+
+  padding: 20px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 14px;
+
+  background: var(--surface);
+}
+
+.analytics-chart-header {
+  margin-bottom: 15px;
+}
+
+.analytics-chart-header h3 {
+  color: var(--text-primary);
+
+  font-size: 15px;
+}
+
+.analytics-chart-header p:last-child {
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+
+  line-height: 1.5;
+}
+
+.analytics-chart {
+  width: 100%;
+
+  height: 310px;
+
+  min-width: 0;
+}
+
+.analytics-chart svg {
+  overflow: visible;
+}
+
+.analytics-empty {
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  color: var(--text-muted);
+
+  font-size: 10px;
+
+  text-align: center;
+}
+
+/* =========================================================
+   TWO COLUMN ANALYTICS
+========================================================= */
+
+.analytics-two-column {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 20px;
+}
+
+/* =========================================================
+   PIE CHART
+========================================================= */
+
+.pie-chart-wrapper {
+  width: 100%;
+
+  min-width: 0;
+}
+
+.pie-chart {
+  width: 100%;
+
+  height: 260px;
+}
+
+.category-legend {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 8px;
+
+  max-height: 190px;
+
+  overflow-y: auto;
+
+  padding-right: 4px;
+}
+
+.category-legend-item {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding: 7px 8px;
+
+  border-radius: 7px;
+
+  background: var(--surface-secondary);
+
+  color: var(--text-secondary);
+
+  font-size: 9px;
+}
+
+.category-legend-item span {
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+
+  gap: 7px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+.category-legend-item i {
+  width: 8px;
+  height: 8px;
+
+  flex: 0 0 8px;
+
+  display: block;
+
+  border-radius: 50%;
+}
+
+.category-legend-item strong {
+  flex-shrink: 0;
+
+  color: var(--text-primary);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   SAVINGS ALLOCATION
+========================================================= */
+
+.allocation-container {
+  display: grid;
+
+  grid-template-columns:
+    190px
+    minmax(0, 1fr);
+
+  align-items: center;
+
+  gap: 20px;
+}
+
+.allocation-circle {
+  width: 175px;
+  height: 175px;
+
+  margin: 0 auto;
+
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background:
+    conic-gradient(
+      #6366f1 0deg,
+      #6366f1
+        calc(
+          min(
+            max(
+              var(--savings-rate),
+              0
+            ),
+            100
+          ) *
+          3.6deg
+        ),
+      var(--surface-secondary)
+        calc(
+          min(
+            max(
+              var(--savings-rate),
+              0
+            ),
+            100
+          ) *
+          3.6deg
+        ),
+      var(--surface-secondary)
+        360deg
+    );
+
+  position: relative;
+}
+
+.allocation-circle::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 15px;
+
+  border-radius: 50%;
+
+  background: var(--surface);
+}
+
+.allocation-circle > div {
+  position: relative;
+
+  z-index: 1;
+
+  text-align: center;
+}
+
+.allocation-circle strong {
+  display: block;
+
+  color: var(--text-primary);
+
+  font-size: 28px;
+}
+
+.allocation-circle span {
+  display: block;
+
+  margin-top: 2px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.allocation-stats {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 12px;
+}
+
+.allocation-stats > div {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 10px;
+
+  padding-bottom: 10px;
+
+  border-bottom: 1px solid var(--border);
+}
+
+.allocation-stats span {
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.allocation-stats strong {
+  color: var(--text-primary);
+
+  font-size: 11px;
+}
+
+.allocation-progress {
+  width: 100%;
+
+  height: 8px;
+
+  margin-top: 20px;
+
+  overflow: hidden;
+
+  border-radius: 20px;
+
+  background: var(--surface-secondary);
+}
+
+.allocation-progress > div {
+  height: 100%;
+
+  border-radius: inherit;
+
+  background: #6366f1;
+
+  transition: width 0.5s ease;
+}
+
+.allocation-description {
+  margin-top: 10px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+
+  line-height: 1.6;
+}
+
+/* =========================================================
+   TOOLTIP
+========================================================= */
+
+.analytics-tooltip {
+  min-width: 150px;
+
+  padding: 11px;
+
+  border: 1px solid var(--border);
+
+  border-radius: 9px;
+
+  background: var(--surface);
+
+  box-shadow: var(--shadow);
+}
+
+.analytics-tooltip > p {
+  margin-bottom: 7px;
+
+  color: var(--text-primary);
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.tooltip-row {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: space-between;
+
+  gap: 12px;
+
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+.tooltip-row strong {
+  color: var(--text-primary);
+}
+
+/* =========================================================
+   NO DATA
+========================================================= */
+
+.analytics-no-data {
+  padding: 35px 20px;
+
+  text-align: center;
+
+  border: 1px dashed var(--border);
+
+  border-radius: 12px;
+}
+
+.analytics-no-data > div {
+  margin-bottom: 8px;
+
+  font-size: 25px;
+}
+
+.analytics-no-data h3 {
+  color: var(--text-secondary);
+
+  font-size: 13px;
+}
+
+.analytics-no-data p {
+  margin-top: 5px;
+
+  color: var(--text-muted);
+
+  font-size: 9px;
+}
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1000px) {
+  .advanced-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .analytics-two-column {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .analytics-filter-form {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .analytics-filter-form button {
+    width: 100%;
+  }
+
+  .allocation-container {
+    grid-template-columns:
+      1fr;
+  }
+
+  .allocation-circle {
+    width: 160px;
+    height: 160px;
+  }
+}
+
+@media (max-width: 600px) {
+  .advanced-analytics {
+    padding: 16px;
+
+    border-radius: 14px;
+  }
+
+  .advanced-analytics-header h2 {
+    font-size: 18px;
+  }
+
+  .analytics-filter-card,
+  .analytics-chart-card {
+    padding: 15px;
+  }
+
+  .analytics-filter-form {
+    grid-template-columns: 1fr;
+  }
+
+  .advanced-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 8px;
+  }
+
+  .advanced-summary-card {
+    padding: 13px;
+  }
+
+  .advanced-summary-card strong {
+    font-size: 15px;
+  }
+
+  .analytics-chart {
+    height: 260px;
+  }
+
+  .pie-chart {
+    height: 230px;
+  }
+
+  .daily-chart {
+    height: 260px;
+  }
+}
+
+@media (max-width: 380px) {
+  .advanced-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .advanced-summary-card {
+    display: grid;
+
+    grid-template-columns:
+      1fr
+      auto;
+
+    gap: 4px 10px;
+  }
+
+  .advanced-summary-card strong {
+    grid-row: span 2;
+  }
+
+  .advanced-summary-card small {
+    margin: 0;
+  }
+
+  .analytics-chart {
+    height: 230px;
+  }
+}
