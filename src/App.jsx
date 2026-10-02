@@ -33,49 +33,27 @@ function App() {
     }
   });
 
-  const [editingTransaction, setEditingTransaction] =
-    useState(null);
-
+  const [editingTransaction, setEditingTransaction] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [typeFilter, setTypeFilter] = useState("all");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("newest");
+  const [showClearModal, setShowClearModal] = useState(false);
 
-  const [typeFilter, setTypeFilter] =
-    useState("all");
-
-  const [categoryFilter, setCategoryFilter] =
-    useState("all");
-
-  const [sortOrder, setSortOrder] =
-    useState("newest");
-
-  const [showClearModal, setShowClearModal] =
-    useState(false);
-
-
-  const importTransactions = (
-    importedTransactions
-  ) => {
+  const importTransactions = (importedTransactions) => {
     setTransactions(importedTransactions);
   };
 
   const clearAllTransactions = () => {
     setTransactions([]);
-
     setEditingTransaction(null);
-
     setSearchTerm("");
-
     setTypeFilter("all");
-
     setCategoryFilter("all");
-
     setSortOrder("newest");
-
     setShowClearModal(false);
   };
 
-  /*
-   * Save transactions whenever they change.
-   */
   useEffect(() => {
     localStorage.setItem(
       STORAGE_KEY,
@@ -83,9 +61,10 @@ function App() {
     );
   }, [transactions]);
 
-  /*
-   * Add transaction
-   */
+  /* =========================================================
+     ADD TRANSACTION
+  ========================================================= */
+
   const addTransaction = (transactionData) => {
     const newTransaction = {
       id: Date.now(),
@@ -103,21 +82,22 @@ function App() {
     ]);
   };
 
-  /*
-   * Update transaction
-   */
+  /* =========================================================
+     UPDATE TRANSACTION
+  ========================================================= */
+
   const updateTransaction = (updatedData) => {
     setTransactions((previousTransactions) =>
       previousTransactions.map((transaction) =>
         transaction.id === updatedData.id
           ? {
-            ...transaction,
-            description: updatedData.description.trim(),
-            amount: Number(updatedData.amount),
-            type: updatedData.type,
-            category: updatedData.category,
-            date: updatedData.date,
-          }
+              ...transaction,
+              description: updatedData.description.trim(),
+              amount: Number(updatedData.amount),
+              type: updatedData.type,
+              category: updatedData.category,
+              date: updatedData.date,
+            }
           : transaction
       )
     );
@@ -125,9 +105,10 @@ function App() {
     setEditingTransaction(null);
   };
 
-  /*
-   * Delete transaction
-   */
+  /* =========================================================
+     DELETE TRANSACTION
+  ========================================================= */
+
   const deleteTransaction = (id) => {
     const transaction = transactions.find(
       (item) => item.id === id
@@ -152,9 +133,10 @@ function App() {
     }
   };
 
-  /*
-   * Edit transaction
-   */
+  /* =========================================================
+     EDIT TRANSACTION
+  ========================================================= */
+
   const startEditing = (transaction) => {
     setEditingTransaction(transaction);
 
@@ -164,19 +146,19 @@ function App() {
     });
   };
 
-  /*
-   * Cancel editing
-   */
   const cancelEditing = () => {
     setEditingTransaction(null);
   };
 
-  /*
-   * Calculate financial summary
-   */
+  /* =========================================================
+     FINANCIAL SUMMARY
+  ========================================================= */
+
   const summary = useMemo(() => {
     const income = transactions
-      .filter((transaction) => transaction.type === "income")
+      .filter(
+        (transaction) => transaction.type === "income"
+      )
       .reduce(
         (total, transaction) =>
           total + Number(transaction.amount),
@@ -184,7 +166,9 @@ function App() {
       );
 
     const expenses = transactions
-      .filter((transaction) => transaction.type === "expense")
+      .filter(
+        (transaction) => transaction.type === "expense"
+      )
       .reduce(
         (total, transaction) =>
           total + Number(transaction.amount),
@@ -201,13 +185,13 @@ function App() {
     };
   }, [transactions]);
 
-  /*
-   * Filter and sort transactions
-   */
+  /* =========================================================
+     FILTER + SORT TRANSACTIONS
+  ========================================================= */
+
   const filteredTransactions = useMemo(() => {
     let result = [...transactions];
 
-    // Search
     if (searchTerm.trim()) {
       const search = searchTerm.toLowerCase();
 
@@ -218,14 +202,13 @@ function App() {
       );
     }
 
-    // Type filter
     if (typeFilter !== "all") {
       result = result.filter(
-        (transaction) => transaction.type === typeFilter
+        (transaction) =>
+          transaction.type === typeFilter
       );
     }
 
-    // Category filter
     if (categoryFilter !== "all") {
       result = result.filter(
         (transaction) =>
@@ -233,7 +216,6 @@ function App() {
       );
     }
 
-    // Sorting
     result.sort((a, b) => {
       if (sortOrder === "newest") {
         return new Date(b.date) - new Date(a.date);
@@ -268,9 +250,16 @@ function App() {
       <Header />
 
       <main className="container">
+
+        {/* ===================================================
+            HERO
+        =================================================== */}
+
         <section className="hero-section">
           <div>
-            <p className="hero-label">PERSONAL FINANCE</p>
+            <p className="hero-label">
+              PERSONAL FINANCE
+            </p>
 
             <h1>
               Take control of your
@@ -284,24 +273,23 @@ function App() {
           </div>
         </section>
 
+        {/* ===================================================
+            SUMMARY
+        =================================================== */}
+
         <SummaryCards summary={summary} />
 
-        <MonthlyAnalytics
-          transactions={transactions}
-        />
+        {/* ===================================================
+            PRIMARY TRANSACTION WORKSPACE
 
-        <AdvancedAnalytics
-  transactions={transactions}
-/>
+            Add Transaction + Recent Transactions are now
+            placed immediately after the summary cards.
+        =================================================== */}
 
-        <DataManager
-          transactions={transactions}
-          onImport={importTransactions}
-        />
+        <div className="main-grid transaction-workspace">
 
+          {/* ADD TRANSACTION */}
 
-
-        <div className="main-grid">
           <section className="left-column">
             <TransactionForm
               onAddTransaction={addTransaction}
@@ -309,24 +297,26 @@ function App() {
               editingTransaction={editingTransaction}
               onCancelEdit={cancelEditing}
             />
-
-            <Statistics
-              transactions={transactions}
-            />
           </section>
+
+          {/* RECENT TRANSACTIONS */}
 
           <section className="right-column">
             <div className="transactions-section">
+
               <div className="section-heading">
                 <div>
                   <p className="section-label">
                     TRANSACTION HISTORY
                   </p>
 
-                  <h2>Recent Transactions</h2>
+                  <h2>
+                    Recent Transactions
+                  </h2>
                 </div>
 
                 <div className="transaction-heading-actions">
+
                   <span className="transaction-count">
                     {transactions.length}{" "}
                     {transactions.length === 1
@@ -345,6 +335,7 @@ function App() {
                       Clear All
                     </button>
                   )}
+
                 </div>
               </div>
 
@@ -364,16 +355,64 @@ function App() {
                 onDelete={deleteTransaction}
                 onEdit={startEditing}
               />
+
             </div>
           </section>
+
         </div>
+
+        {/* ===================================================
+            MONTHLY ANALYTICS
+        =================================================== */}
+
+        <MonthlyAnalytics
+          transactions={transactions}
+        />
+
+        {/* ===================================================
+            ADVANCED ANALYTICS
+        =================================================== */}
+
+        <AdvancedAnalytics
+          transactions={transactions}
+        />
+
+        {/* ===================================================
+            SPENDING OVERVIEW
+
+            Full width so there is no large empty area.
+        =================================================== */}
+
+        <section className="spending-overview-section">
+          <Statistics
+            transactions={transactions}
+          />
+        </section>
+
+        {/* ===================================================
+            DATA MANAGEMENT
+        =================================================== */}
+
+        <DataManager
+          transactions={transactions}
+          onImport={importTransactions}
+        />
+
       </main>
+
+      {/* =====================================================
+          FOOTER
+      ===================================================== */}
 
       <footer className="footer">
         <p>
           Expense Tracker • Built with React
         </p>
       </footer>
+
+      {/* =====================================================
+          CLEAR ALL MODAL
+      ===================================================== */}
 
       <ConfirmationModal
         isOpen={showClearModal}

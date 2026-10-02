@@ -1,16 +1,114 @@
-# React + Vite
+# 💰 Expense Tracker
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+<p align="center">
+  <strong>A modern and responsive personal finance dashboard built with React.</strong>
+</p>
 
-Currently, two official plugins are available:
+<p align="center">
+  Track your income • Manage expenses • Analyze spending • Monitor your budget
+</p>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## 🌐 Overview
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+**Expense Tracker** is a modern personal finance management application designed to make tracking daily income and expenses simple, visual, and user-friendly.
 
-## Expanding the ESLint configuration
+The dashboard provides transaction management, monthly budgeting, interactive analytics, spending insights, and data backup tools — all while keeping your data stored locally in your browser.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+> 🚀 Built as a frontend-focused React project with a clean dashboard experience and responsive design.
+
+---
+
+## ✨ Features
+
+### 💳 Transaction Management
+
+- Add income and expense transactions
+- Edit existing transactions
+- Delete transactions
+- Search transactions
+- Filter by type
+- Filter by category
+- Sort transactions
+- Clear all transactions with confirmation
+
+### 📊 Financial Dashboard
+
+- Total balance
+- Total income
+- Total expenses
+- Savings overview
+- Transaction count
+- Clean dashboard layout
+
+### 📅 Monthly Analytics
+
+- Monthly income tracking
+- Monthly expense tracking
+- Monthly savings
+- Transaction count
+- Monthly budget management
+- Budget progress tracking
+- Budget exceeded indicator
+- Previous month comparison
+- 12-month spending trends
+- Category-wise spending breakdown
+
+### 📈 Advanced Analytics
+
+- Custom date-range analysis
+- Income vs. expense visualization
+- Savings analysis
+- Category distribution
+- Financial health overview
+- Daily spending activity
+- Interactive charts powered by Recharts
+
+### 💾 Data Management
+
+- JSON data backup
+- JSON data import
+- CSV export
+- LocalStorage persistence
+- No backend or database required
+
+### 📱 Responsive Design
+
+Designed to provide a smooth experience across:
+
+- 🖥️ Desktop
+- 💻 Laptop
+- 📱 Tablet
+- 📲 Mobile
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology | Purpose |
+|------------|---------|
+| **React** | Frontend UI |
+| **JavaScript** | Application logic |
+| **Vite** | Development & build tooling |
+| **CSS** | Styling & responsive design |
+| **Recharts** | Data visualization |
+| **LocalStorage** | Client-side data persistence |
+| **HTML5** | Application structure |
+
+---
+
+## 📸 Dashboard
+
+### Main Dashboard
+
+The dashboard brings your financial information together in one place:
+
+- Balance overview
+- Income & expense summary
+- Transaction management
+- Monthly analytics
+- Advanced charts
+- Spending analysis
+- Data management
+
