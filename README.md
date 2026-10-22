@@ -4,112 +4,167 @@
 
 ### Understand your money. Make more intentional decisions.
 
-A clean, responsive personal finance dashboard built with **React, Vite, and Recharts**. Track transactions, manage monthly budgets, explore spending trends, and back up your data from one dashboard.
+A modern, responsive personal finance dashboard built with **React, Vite, and Recharts**. Track income and expenses, set monthly budgets, explore spending trends, and keep your data organized with local browser storage and convenient backup tools.
 
 <p>
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=20232A" alt="React" />
-  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
-  <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript" />
-  <img src="https://img.shields.io/badge/Recharts-Analytics-22A06B?style=for-the-badge" alt="Recharts" />
-  <img src="https://img.shields.io/badge/Responsive-Design-2563EB?style=for-the-badge" alt="Responsive design" />
-  <img src="https://img.shields.io/badge/License-MIT-8250DF?style=for-the-badge" alt="MIT License" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=20232A" alt="React 19">
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite 8">
+  <img src="https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
+  <img src="https://img.shields.io/badge/Recharts-Analytics-22A06B?style=for-the-badge" alt="Recharts">
+  <img src="https://img.shields.io/badge/Responsive-Design-2563EB?style=for-the-badge" alt="Responsive design">
+  <img src="https://img.shields.io/badge/License-MIT-8250DF?style=for-the-badge" alt="MIT License">
 </p>
 
 </div>
 
 ---
 
-## Overview
+## 📌 Overview
 
-**Expense Tracker** is a client-side application for organizing everyday income and expenses. Its dashboard brings balances, transaction history, monthly budgets, and interactive charts together in one place.
+**Expense Tracker** is a client-side personal finance application designed to make everyday money management easier to understand. Its dashboard brings balances, income, expenses, transaction history, monthly budgets, and interactive analytics together in one organized workspace.
 
-Search and sort transactions, compare monthly spending, review category breakdowns, switch between light and dark themes, and export your records for backup. Transactions, budgets, and theme preference are stored in your browser using Local Storage. No account or backend is required.
+Search and organize transactions, compare spending across months, explore category breakdowns, switch between light and dark themes, and export your data for backup. Your transactions, monthly budgets, and theme preference are saved in your browser using Local Storage, so the app does not need a backend or database to run.
 
-> **Privacy:** This is a browser-only finance tracker. Data is not encrypted by the app, synced across devices, or backed up to a server. Screenshots and any example records included with the project should be fictional before publishing.
+> **Privacy note:** This version stores information locally in the browser. It does not provide account-based access, cloud synchronization, or automatic cross-device backups.
 
-## Features
+## ✨ Features
 
-### Transaction management
-- Create, edit, and delete income or expense transactions.
-- Search, filter by type/category, and sort transaction history.
-- Clear all transactions after confirmation.
-- Validate descriptions, dates, transaction types, and positive finite amounts.
+### 💳 Transaction management
 
-### Financial overview
-- Summary cards for balance, income, expenses, and savings.
-- Monthly income, expense, savings, and transaction totals.
-- Per-month budgets, progress indicators, and over-budget warnings.
-- Previous-month comparisons and a 12-month spending trend.
-- Date-range analysis, daily activity, and category breakdown charts.
+- Add income and expense transactions.
+- Edit existing transaction details.
+- Delete individual transactions with confirmation.
+- Search transactions by description.
+- Filter transactions by type and category.
+- Sort by newest, oldest, highest amount, or lowest amount.
+- Clear all transactions with a confirmation dialog.
 
-### Data portability and preferences
-- Export transactions as JSON backups or CSV files.
-- Import validated JSON backups with transaction-count and file-size limits.
-- Protect CSV exports from common spreadsheet formula-injection patterns.
-- Light/dark theme toggle with browser-side preference persistence.
-- Responsive layouts for desktop, tablet, and mobile.
+### 📊 Financial dashboard
 
-## Screenshots
+- View total balance, income, expenses, and savings at a glance.
+- See a transaction count and clearly organized transaction history.
+- Review a summary calculated from your recorded transactions.
+- Use a responsive dashboard layout for different screen sizes.
+
+### 📅 Monthly budgeting and analytics
+
+- Review income, expenses, and savings for a selected month.
+- Set and save a budget for each month.
+- Track budget usage and remaining budget.
+- See when monthly spending exceeds the budget.
+- Compare income and expenses with the previous month.
+- Explore a 12-month expense trend.
+- View a category-wise breakdown of monthly spending.
+
+### 📈 Advanced visual analytics
+
+- Analyze data across a custom date range.
+- Compare income and expenses.
+- Explore savings and spending patterns.
+- Inspect category distribution and daily spending activity.
+- Visualize financial data with interactive Recharts charts.
+
+### 💾 Data backup and portability
+
+- Export transactions as a JSON backup.
+- Import transactions from a valid Expense Tracker JSON backup.
+- Export transaction records as a CSV file.
+- Keep transactions and monthly budgets saved in browser Local Storage.
+
+### 🌗 Personalization and responsive UI
+
+- Switch between light and dark themes.
+- Remember the selected theme in the browser.
+- Use a clean dashboard with reusable React components.
+- Browse on desktop, laptop, tablet, and mobile screens.
+
+## 🖼️ Screenshots
 
 ### Dashboard
+
 ![Expense Tracker dashboard](screenshots/dashboard.png)
 
 ### Monthly and advanced analytics
+
 ![Expense Tracker analytics](screenshots/analytics.png)
 
 ### Transaction management
+
 ![Expense Tracker transactions](screenshots/transactions.png)
 
-## Tech stack
+## 🧰 Tech Stack
 
 | Technology | Purpose |
 |---|---|
-| React | Component-based user interface |
-| Vite | Development server and production builds |
-| JavaScript (ES modules) | Application logic and data handling |
-| CSS3 | Styling, responsive layout, and dark mode |
-| Recharts | Financial data visualizations |
-| React Icons | Interface icons |
-| Browser Local Storage | Local persistence |
-| ESLint | Static code-quality checks |
-| Node.js test runner | Unit tests for validation and CSV safety |
+| **React 19** | Component-based user interface and application state. |
+| **Vite** | Local development server and production build tooling. |
+| **JavaScript (ES Modules)** | Transaction logic, filtering, summaries, and data handling. |
+| **CSS3** | Layout, responsive styles, theme tokens, and dark mode. |
+| **Recharts** | Interactive charts and financial data visualizations. |
+| **React Icons** | Icons used throughout the interface. |
+| **Local Storage API** | Persists transactions, monthly budgets, and theme preference in the browser. |
+| **ESLint** | Static checks for code quality. |
 
-## Getting started
+## 🚀 Getting Started
 
-### Requirements
-- Node.js `20.19+` or `22.12+`
-- npm
-- A modern web browser
+### Prerequisites
 
-### Install and run
+Install [Node.js](https://nodejs.org/) and npm. Use a Node.js version compatible with the Vite version specified in `package.json`.
+
+### 1. Clone the repository
+
+Replace `YOUR_USERNAME` with your GitHub username and adjust the repository name if yours is different.
 
 ```bash
-git clone https://github.com/samyakdutta835/expense-tracker-app.git
-cd expense-tracker-app
+git clone https://github.com/YOUR_USERNAME/expense-tracker.git
+```
+
+### 2. Navigate to the project directory
+
+```bash
+cd expense-tracker
+```
+
+### 3. Install dependencies
+
+```bash
 npm install
+```
+
+### 4. Start the development server
+
+```bash
 npm run dev
 ```
 
-Open the local URL printed by Vite in your terminal.
+Open the local address printed in your terminal by Vite.
 
-> Run `npm install` after checking out this release to generate a fresh `package-lock.json` for the updated Vite dependency. Commit the generated lockfile after verifying it.
-
-## Available commands
+## 📦 Available Scripts
 
 | Command | Description |
 |---|---|
-| `npm install` | Install dependencies and generate/update the lockfile |
-| `npm run dev` | Start the development server |
-| `npm run lint` | Run ESLint |
-| `npm run test` | Run the Node.js unit tests |
-| `npm run build` | Build the production app into `dist/` |
-| `npm run preview` | Preview the production build locally |
-| `npm run check` | Run lint, tests, and production build |
+| `npm install` | Install project dependencies. |
+| `npm run dev` | Start the Vite development server. |
+| `npm run build` | Create an optimized production build in `dist/`. |
+| `npm run preview` | Preview the production build locally. |
+| `npm run lint` | Run ESLint checks on the project. |
 
-## Project structure
+### Build for production
+
+```bash
+npm run build
+```
+
+### Preview the production build
+
+```bash
+npm run preview
+```
+
+## 📂 Project Structure
 
 ```text
-expense-tracker-app/
+expense-tracker/
 ├── public/
 │   ├── favicon.svg
 │   └── icons.svg
@@ -119,58 +174,102 @@ expense-tracker-app/
 │   └── transactions.png
 ├── src/
 │   ├── assets/
+│   │   ├── hero.png
+│   │   ├── react.svg
+│   │   └── vite.svg
 │   ├── components/
+│   │   ├── AdvancedAnalytics.jsx
+│   │   ├── ConfirmationModal.jsx
+│   │   ├── DataManager.jsx
+│   │   ├── EmptyState.jsx
+│   │   ├── Header.jsx
+│   │   ├── MonthlyAnalytics.jsx
+│   │   ├── SearchBar.jsx
+│   │   ├── Statistics.jsx
+│   │   ├── SummaryCards.jsx
+│   │   ├── TransactionForm.jsx
+│   │   ├── TransactionItem.jsx
+│   │   └── TransactionList.jsx
 │   ├── styles/
-│   ├── utils/
-│   │   ├── csv.js
-│   │   └── transactions.js
+│   │   ├── App.css
+│   │   ├── EmptyState.css
+│   │   ├── Header.css
+│   │   ├── SearchBar.css
+│   │   ├── Statistics.css
+│   │   ├── SummaryCards.css
+│   │   ├── TransactionForm.css
+│   │   ├── TransactionItem.css
+│   │   └── TransactionList.css
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
-├── tests/
-│   └── transactions.test.js
 ├── .gitignore
 ├── eslint.config.js
 ├── index.html
 ├── LICENSE
 ├── package.json
-├── README.md
-└── vite.config.js
+├── package-lock.json
+├── vite.config.js
+└── README.md
 ```
 
-## Data storage and backup
+## 💡 How data is stored
 
-The app stores its transaction list, monthly budgets, and theme preference in browser Local Storage. Those values stay in the current browser profile only. Clearing site data can delete them, and they do not follow you to another device. Use **JSON Backup** regularly if you need a separate copy.
+The application uses the browser's Local Storage API to persist information between visits in the same browser profile.
 
-Importing a backup validates every record and rejects malformed data before replacing the current list. The importer has a 5 MB file limit and a 10,000-transaction limit. CSV text fields beginning with common spreadsheet formula markers are prefixed to reduce formula-injection risk.
+- **Transactions:** stored under `expense_tracker_transactions`.
+- **Monthly budgets:** stored under `expense_tracker_monthly_budgets`.
+- **Theme preference:** stored under `expense_tracker_theme`.
 
-## Important limitations
+Because the application does not use a backend, data is not synced between browsers or devices. Clearing the browser's site data can remove locally stored information. Export a JSON backup periodically if you need a separate copy of your transaction records.
 
-- No authentication, server, cloud sync, bank connection, or payment feature is included.
-- Local Storage is not encrypted by the app. Do not enter sensitive bank credentials or use this app as a secure financial record system.
-- Financial summaries reflect the records entered by the user and are not financial advice.
+## 🔐 Scope and limitations
 
-## Future improvements
-- [ ] Recurring transactions and scheduled payments.
-- [ ] Savings goals and custom categories.
-- [ ] Optional encrypted backup and restore.
-- [ ] Automated browser tests and accessibility checks.
-- [ ] Optional account-based cloud sync with a secure backend.
+- No user accounts, authentication, or cloud synchronization are included.
+- No bank accounts or financial institutions are connected.
+- Imported JSON files must match the application's expected transaction backup format.
+- CSV export is intended for downloading and reviewing transaction records; importing is supported through JSON backups.
+- The app provides personal tracking and visualization tools, not professional financial advice.
 
-## Contributing
+## 🔮 Future Improvements
+
+- [ ] Add recurring transactions and scheduled payments.
+- [ ] Add custom categories and transaction notes.
+- [ ] Add savings goals and goal-progress tracking.
+- [ ] Add more flexible currency and date-format settings.
+- [ ] Add optional encrypted backup and restore tools.
+- [ ] Introduce account-based cloud sync as an optional feature.
+- [ ] Add accessibility checks and expanded keyboard navigation.
+- [ ] Add automated tests for transaction and analytics logic.
+
+## 🤝 Contributing
+
+Ideas, bug reports, and improvements are welcome.
 
 1. Fork the repository.
-2. Create a feature branch: `git checkout -b feature/your-improvement`.
-3. Make your changes and run `npm run check`.
-4. Commit your changes and open a pull request with a clear explanation.
+2. Create a feature branch:
 
-## License
+   ```bash
+   git checkout -b feature/your-improvement
+   ```
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for details.
+3. Make your changes and test the affected flows.
+4. Run the project's checks:
 
-## Author
+   ```bash
+   npm run lint
+   npm run build
+   ```
 
-**Samyak Dutta** · Computer Science Student · Front-End Developer
+5. Commit your changes and open a pull request describing the update.
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the [`LICENSE`](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**Samyak Dutta**  
 
 ---
 
