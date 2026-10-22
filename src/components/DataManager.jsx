@@ -1,4 +1,8 @@
 import { useRef, useState } from "react";
+import { normalizeTransactions } from "../utils/transactions";
+import { escapeCsvCell } from "../utils/csv";
+
+const MAX_IMPORT_BYTES = 5 * 1024 * 1024;
 
 function DataManager({
   transactions,
@@ -31,7 +35,8 @@ function DataManager({
 
     document.body.removeChild(link);
 
-    URL.revokeObjectURL(url);
+    // Allow the browser to begin the download before revoking the object URL.
+    window.setTimeout(() => URL.revokeObjectURL(url), 1_000);
   };
 
   const exportJSON = () => {
@@ -71,26 +76,12 @@ function DataManager({
       ]
     );
 
-    const csvRows = [
-      headers,
-      ...rows,
-    ].map((row) =>
-      row
-        .map((value) => {
-          const stringValue = String(
-            value ?? ""
-          );
-
-          return `"${stringValue.replace(
-            /"/g,
-            '""'
-          )}"`;
-        })
-        .join(",")
+    const csvRows = [headers, ...rows].map((row) =>
+      row.map(escapeCsvCell).join(",")
     );
 
     downloadFile(
-      csvRows.join("\n"),
+      `\uFEFF${csvRows.join("\r\n")}`,
       "expense-tracker.csv",
       "text/csv;charset=utf-8;"
     );
@@ -103,94 +94,54 @@ function DataManager({
   };
 
   const handleFileChange = (event) => {
-    const file = event.target.files?.[0];
+    const input = event.currentTarget;
+    const file = input.files?.[0];
 
-    if (!file) {
+    setImportError("");
+    if (!file) return;
+
+    // Reset now, so the same file can be selected again after a failed import.
+    input.value = "";
+
+    if (file.size > MAX_IMPORT_BYTES) {
+      setImportError("This backup is too large. Choose a JSON file smaller than 5 MB.");
+      return;
+    }
+
+    if (!file.name.toLowerCase().endsWith(".json")
+      && file.type !== "application/json") {
+      setImportError("Choose a valid .json Expense Tracker backup.");
       return;
     }
 
     const reader = new FileReader();
 
-    reader.onload = (loadEvent) => {
+    reader.onload = () => {
       try {
-        const parsed = JSON.parse(
-          loadEvent.target.result
-        );
-
-        if (!Array.isArray(parsed)) {
-          throw new Error(
-            "Invalid backup format."
-          );
+        if (typeof reader.result !== "string") {
+          throw new Error("The selected file could not be read as text.");
         }
 
-        const validTransactions =
-          parsed.filter((transaction) => {
-            return (
-              transaction &&
-              typeof transaction ===
-                "object" &&
-              transaction.description &&
-              Number(transaction.amount) > 0 &&
-              ["income", "expense"].includes(
-                transaction.type
-              ) &&
-              transaction.category &&
-              transaction.date
-            );
-          });
-
-        if (
-          validTransactions.length === 0 &&
-          parsed.length > 0
-        ) {
-          throw new Error(
-            "No valid transactions were found."
-          );
-        }
-
-        const cleanedTransactions =
-          validTransactions.map(
-            (transaction) => ({
-              id:
-                transaction.id ??
-                Date.now() +
-                  Math.random(),
-
-              description:
-                String(
-                  transaction.description
-                ).trim(),
-
-              amount: Number(
-                transaction.amount
-              ),
-
-              type: transaction.type,
-
-              category:
-                transaction.category,
-
-              date: transaction.date,
-
-              createdAt:
-                transaction.createdAt ??
-                new Date().toISOString(),
-            })
-          );
+        const parsed = JSON.parse(reader.result);
+        const cleanedTransactions = normalizeTransactions(parsed, { strict: true });
 
         onImport(cleanedTransactions);
-
-        event.target.value = "";
+        setImportError("");
       } catch (error) {
-        console.error(
-          "Import error:",
-          error
-        );
-
         setImportError(
-          "Unable to import this file. Please select a valid Expense Tracker JSON backup."
+          error instanceof Error && error.message.startsWith("Transaction ")
+            ? `${error.message} No data was imported.`
+            : "Unable to import this file. Select a valid Expense Tracker JSON backup. No data was changed."
         );
       }
+    };
+
+    reader.onerror = () => {
+      setImportError("The selected file could not be read. Please try again.");
+    };
+
+    reader.onabort = () => {
+      setImportError("File import was cancelled.");
     };
 
     reader.readAsText(file);
@@ -207,8 +158,7 @@ function DataManager({
           <h3>Backup & Export</h3>
 
           <p>
-            Keep a backup of your transactions or
-            move your data between devices.
+            Export a backup or restore transactions from a JSON file. Keep exported backups somewhere safe.
           </p>
         </div>
       </div>

@@ -10,28 +10,26 @@ import MonthlyAnalytics from "./components/MonthlyAnalytics";
 import DataManager from "./components/DataManager";
 import ConfirmationModal from "./components/ConfirmationModal";
 import AdvancedAnalytics from "./components/AdvancedAnalytics";
+import { normalizeTransactions } from "./utils/transactions";
 
 import "./styles/App.css";
 
 const STORAGE_KEY = "expense_tracker_transactions";
 
-const defaultTransactions = [];
+function loadStoredTransactions() {
+  try {
+    const savedTransactions = window.localStorage.getItem(STORAGE_KEY);
+    return savedTransactions
+      ? normalizeTransactions(JSON.parse(savedTransactions))
+      : [];
+  } catch (error) {
+    console.warn("Saved transactions could not be loaded. Starting with an empty list.", error);
+    return [];
+  }
+}
 
 function App() {
-  const [transactions, setTransactions] = useState(() => {
-    try {
-      const savedTransactions = localStorage.getItem(STORAGE_KEY);
-
-      if (savedTransactions) {
-        return JSON.parse(savedTransactions);
-      }
-
-      return defaultTransactions;
-    } catch (error) {
-      console.error("Failed to load transactions:", error);
-      return [];
-    }
-  });
+  const [transactions, setTransactions] = useState(loadStoredTransactions);
 
   const [editingTransaction, setEditingTransaction] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,10 +53,14 @@ function App() {
   };
 
   useEffect(() => {
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify(transactions)
-    );
+    try {
+      window.localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(transactions)
+      );
+    } catch (error) {
+      console.warn("Transactions could not be saved in browser storage.", error);
+    }
   }, [transactions]);
 
   /* =========================================================
@@ -292,6 +294,7 @@ function App() {
 
           <section className="left-column">
             <TransactionForm
+              key={editingTransaction?.id ?? "new-transaction"}
               onAddTransaction={addTransaction}
               onUpdateTransaction={updateTransaction}
               editingTransaction={editingTransaction}

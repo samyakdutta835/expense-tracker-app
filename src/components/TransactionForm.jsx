@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const categories = [
   "Food",
@@ -16,16 +16,30 @@ const categories = [
 const getToday = () => {
   const date = new Date();
 
-  return date.toISOString().split("T")[0];
+  return new Date(date.getTime() - date.getTimezoneOffset() * 60_000)
+    .toISOString()
+    .slice(0, 10);
 };
 
-const initialForm = {
-  description: "",
-  amount: "",
-  type: "expense",
-  category: "Food",
-  date: getToday(),
-};
+function createInitialForm(transaction = null) {
+  if (transaction) {
+    return {
+      description: transaction.description,
+      amount: String(transaction.amount),
+      type: transaction.type,
+      category: transaction.category,
+      date: transaction.date,
+    };
+  }
+
+  return {
+    description: "",
+    amount: "",
+    type: "expense",
+    category: "Food",
+    date: getToday(),
+  };
+}
 
 function TransactionForm({
   onAddTransaction,
@@ -33,25 +47,11 @@ function TransactionForm({
   editingTransaction,
   onCancelEdit,
 }) {
-  const [formData, setFormData] = useState(initialForm);
+  const [formData, setFormData] = useState(() =>
+    createInitialForm(editingTransaction)
+  );
 
   const [error, setError] = useState("");
-
-  useEffect(() => {
-    if (editingTransaction) {
-      setFormData({
-        description: editingTransaction.description,
-        amount: editingTransaction.amount,
-        type: editingTransaction.type,
-        category: editingTransaction.category,
-        date: editingTransaction.date,
-      });
-    } else {
-      setFormData(initialForm);
-    }
-
-    setError("");
-  }, [editingTransaction]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -75,7 +75,7 @@ function TransactionForm({
       return;
     }
 
-    if (!formData.amount || amount <= 0) {
+    if (!formData.amount || !Number.isFinite(amount) || amount <= 0) {
       setError("Amount must be greater than ₹0.");
       return;
     }
@@ -100,7 +100,7 @@ function TransactionForm({
       });
     }
 
-    setFormData(initialForm);
+    setFormData(createInitialForm());
     setError("");
   };
 
@@ -136,6 +136,7 @@ function TransactionForm({
             value={formData.description}
             onChange={handleChange}
             maxLength={60}
+            required
           />
         </div>
 
@@ -155,8 +156,9 @@ function TransactionForm({
                 placeholder="0"
                 value={formData.amount}
                 onChange={handleChange}
-                min="0"
+                min="0.01"
                 step="0.01"
+                required
               />
             </div>
           </div>
@@ -172,6 +174,7 @@ function TransactionForm({
               type="date"
               value={formData.date}
               onChange={handleChange}
+              required
             />
           </div>
         </div>

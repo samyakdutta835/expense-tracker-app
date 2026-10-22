@@ -1,17 +1,27 @@
 import { useEffect, useState } from "react";
 
+function readSavedTheme() {
+  try {
+    return window.localStorage.getItem("expense_tracker_theme") === "dark";
+  } catch {
+    return false;
+  }
+}
+
 function Header() {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("expense_tracker_theme") === "dark";
-  });
+  const [darkMode, setDarkMode] = useState(readSavedTheme);
 
   useEffect(() => {
     document.body.classList.toggle("dark-mode", darkMode);
 
-    localStorage.setItem(
-      "expense_tracker_theme",
-      darkMode ? "dark" : "light"
-    );
+    try {
+      window.localStorage.setItem(
+        "expense_tracker_theme",
+        darkMode ? "dark" : "light"
+      );
+    } catch (error) {
+      console.warn("Theme preference could not be saved in browser storage.", error);
+    }
   }, [darkMode]);
 
   return (

@@ -2,6 +2,27 @@ import { useEffect, useMemo, useState } from "react";
 
 const BUDGET_STORAGE_KEY = "expense_tracker_monthly_budgets";
 
+function loadStoredBudgets() {
+  try {
+    const saved = window.localStorage.getItem(BUDGET_STORAGE_KEY);
+    if (!saved) return {};
+
+    const parsed = JSON.parse(saved);
+    if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+
+    return Object.fromEntries(
+      Object.entries(parsed).filter(([month, value]) =>
+        /^\d{4}-(0[1-9]|1[0-2])$/.test(month)
+        && Number.isFinite(Number(value))
+        && Number(value) > 0
+      ).map(([month, value]) => [month, Number(value)])
+    );
+  } catch (error) {
+    console.warn("Saved budgets could not be loaded. Starting without budgets.", error);
+    return {};
+  }
+}
+
 const MONTH_NAMES = [
   "January",
   "February",
@@ -85,25 +106,10 @@ function MonthlyAnalytics({ transactions }) {
   const [selectedMonth, setSelectedMonth] =
     useState(getCurrentMonthKey());
 
-  const [budgets, setBudgets] = useState(() => {
-    try {
-      const saved = localStorage.getItem(
-        BUDGET_STORAGE_KEY
-      );
-
-      return saved ? JSON.parse(saved) : {};
-    } catch (error) {
-      console.error(
-        "Failed to load budgets:",
-        error
-      );
-
-      return {};
-    }
-  });
-
-  const [budgetInput, setBudgetInput] =
-    useState("");
+  const [budgets, setBudgets] = useState(loadStoredBudgets);
+  const [budgetInputs, setBudgetInputs] = useState({});
+  const budgetInput = budgetInputs[selectedMonth]
+    ?? (budgets[selectedMonth] === undefined ? "" : String(budgets[selectedMonth]));
 
   const availableMonths = useMemo(
     () => getLastMonths(12),
@@ -111,22 +117,15 @@ function MonthlyAnalytics({ transactions }) {
   );
 
   useEffect(() => {
-    localStorage.setItem(
-      BUDGET_STORAGE_KEY,
-      JSON.stringify(budgets)
-    );
+    try {
+      window.localStorage.setItem(
+        BUDGET_STORAGE_KEY,
+        JSON.stringify(budgets)
+      );
+    } catch (error) {
+      console.warn("Budgets could not be saved in browser storage.", error);
+    }
   }, [budgets]);
-
-  useEffect(() => {
-    const currentBudget =
-      budgets[selectedMonth] ?? "";
-
-    setBudgetInput(
-      currentBudget === ""
-        ? ""
-        : String(currentBudget)
-    );
-  }, [selectedMonth, budgets]);
 
   const monthlyData = useMemo(() => {
     const monthTransactions = transactions.filter(
@@ -309,15 +308,13 @@ function MonthlyAnalytics({ transactions }) {
 
     const amount = Number(budgetInput);
 
-    if (!budgetInput || amount <= 0) {
+    if (!budgetInput.trim() || !Number.isFinite(amount) || amount <= 0) {
       setBudgets((previous) => {
         const updated = { ...previous };
-
         delete updated[selectedMonth];
-
         return updated;
       });
-
+      setBudgetInputs((previous) => ({ ...previous, [selectedMonth]: "" }));
       return;
     }
 
@@ -325,6 +322,7 @@ function MonthlyAnalytics({ transactions }) {
       ...previous,
       [selectedMonth]: amount,
     }));
+    setBudgetInputs((previous) => ({ ...previous, [selectedMonth]: String(amount) }));
   };
 
   return (
@@ -518,11 +516,13 @@ function MonthlyAnalytics({ transactions }) {
               min="0"
               step="100"
               placeholder="Enter monthly budget"
+              aria-label="Monthly budget amount"
               value={budgetInput}
               onChange={(event) =>
-                setBudgetInput(
-                  event.target.value
-                )
+                setBudgetInputs((previous) => ({
+                  ...previous,
+                  [selectedMonth]: event.target.value,
+                }))
               }
             />
           </div>
